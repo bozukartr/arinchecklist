@@ -9,12 +9,14 @@
 // ---------------------------------------------------------------------------
 
 export const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
+  apiKey: "AIzaSyBSVNaXDKLqr0t7ShmwWguzcgtj8c2l-4Y",
+  authDomain: "arinchecklist.firebaseapp.com",
+  databaseURL: "https://arinchecklist-default-rtdb.firebaseio.com",
+  projectId: "arinchecklist",
+  storageBucket: "arinchecklist.firebasestorage.app",
+  messagingSenderId: "1034107230641",
+  appId: "1:1034107230641:web:b807728e1fdcedd88c8590",
+  measurementId: "G-BDV4FLCVY4",
 };
 
 // Firestore'da verilerin saklanacağı koleksiyon adı.

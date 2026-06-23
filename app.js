@@ -154,6 +154,13 @@ async function initFirebase() {
     firestore = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
     const app = appMod.initializeApp(firebaseConfig);
     db = firestore.getFirestore(app);
+    // Analytics (yalnızca measurementId varsa ve desteklenen ortamda)
+    if (firebaseConfig.measurementId) {
+      try {
+        const an = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js");
+        if (await an.isSupported()) an.getAnalytics(app);
+      } catch (_) { /* analytics opsiyonel */ }
+    }
     setSyncBadge(true, "Canlı");
     return true;
   } catch (e) {

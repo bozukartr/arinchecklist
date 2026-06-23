@@ -34,7 +34,7 @@ service cloud.firestore {
 
       allow write: if
         // doküman kimliği geçerli bir tarih biçiminde olmalı
-        date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
         // gönderilen veri beklenen alanların dışına çıkmamalı
         && request.resource.data.keys().hasOnly(['tasks', 'sign', 'updatedAt'])
         // aşırı büyük yazımları engelle (kötüye kullanım koruması)
@@ -53,7 +53,7 @@ service cloud.firestore {
     // -------------------------------------------------------------------
     // match /checklists/{date} {
     //   allow read, write: if request.auth != null
-    //     && date.matches('^\\d{4}-\\d{2}-\\d{2}$');
+    //     && date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
     // }
   }
 }

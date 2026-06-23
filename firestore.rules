@@ -1,0 +1,59 @@
+rules_version = '2';
+
+// ARIN Resort Operasyon Takip — Firestore Güvenlik Kuralları
+//
+// Uygulama "checklists" koleksiyonunu kullanır; her gün YYYY-MM-DD
+// kimlikli bir dokümanda saklanır:
+//   checklists/{date}
+//     tasks: { "morning:0": { done: bool, note: string }, ... }
+//     sign:  { responsible: string, manager: string }
+//     updatedAt: string (ISO)
+//
+// Aşağıda 3 seçenek var. Aktif olarak kullanmak istediğinizi bırakıp
+// diğerlerini silin/yorum satırı yapın. VARSAYILAN: Seçenek B.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------
+    // SEÇENEK A — Hızlı başlangıç (TEST / GEÇİCİ)
+    // Belirli bir tarihe kadar herkes okuyup yazabilir. Sadece deneme için.
+    // -------------------------------------------------------------------
+    // match /{document=**} {
+    //   allow read, write: if request.time < timestamp.date(2026, 9, 1);
+    // }
+
+    // -------------------------------------------------------------------
+    // SEÇENEK B (VARSAYILAN) — Doğrulamalı açık erişim, giriş gerektirmez
+    // Sadece "checklists" koleksiyonuna izin verir, veri biçimini doğrular
+    // ve doküman kimliğinin YYYY-MM-DD formatında olmasını zorunlu kılar.
+    // Uygulama olduğu gibi (login olmadan) çalışmaya devam eder.
+    // -------------------------------------------------------------------
+    match /checklists/{date} {
+      allow read: if true;
+
+      allow write: if
+        // doküman kimliği geçerli bir tarih biçiminde olmalı
+        date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        // gönderilen veri beklenen alanların dışına çıkmamalı
+        && request.resource.data.keys().hasOnly(['tasks', 'sign', 'updatedAt'])
+        // aşırı büyük yazımları engelle (kötüye kullanım koruması)
+        && request.resource.size() < 200000;
+    }
+
+    // Diğer tüm yollar kapalı.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------
+    // SEÇENEK C — Kimlik doğrulamalı (ÖNERİLEN, giriş eklerseniz)
+    // Firebase Authentication eklerseniz bunu kullanın; yalnızca giriş
+    // yapmış kullanıcılar okuyup yazabilir.
+    // -------------------------------------------------------------------
+    // match /checklists/{date} {
+    //   allow read, write: if request.auth != null
+    //     && date.matches('^\\d{4}-\\d{2}-\\d{2}$');
+    // }
+  }
+}

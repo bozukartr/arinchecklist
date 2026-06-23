@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e3a2f" />
+  <meta name="description" content="ARIN Resort Bodrum Misafir İlişkileri Operasyon Takip" />
+  <title>ARIN Resort · Operasyon Takip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div class="brand-text">
+          <h1>ARIN <span>RESORT</span></h1>
+          <p>Misafir İlişkileri Operasyon</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="syncBadge" class="sync-badge offline" title="Bağlantı durumu">
+          <span class="dot"></span><span class="sync-text">Yerel</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Date / context bar -->
+    <section class="context-bar">
+      <button class="date-nav" id="prevDay" aria-label="Önceki gün">‹</button>
+      <div class="date-display">
+        <input type="date" id="datePicker" />
+        <span id="dateLabel" class="date-label"></span>
+      </div>
+      <button class="date-nav" id="nextDay" aria-label="Sonraki gün">›</button>
+    </section>
+
+    <!-- View tabs -->
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-view="daily">Günlük</button>
+      <button class="tab" data-view="weekly">Haftalık</button>
+      <button class="tab" data-view="monthly">Aylık</button>
+      <button class="tab" data-view="archive">Arşiv</button>
+    </nav>
+
+    <!-- Progress overview -->
+    <section class="progress-card" id="progressCard">
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <div class="ring-label"><span id="ringPct">0%</span><small>Tamamlandı</small></div>
+      </div>
+      <div class="progress-meta">
+        <div class="meta-item"><strong id="doneCount">0</strong><span>Tamamlanan</span></div>
+        <div class="meta-item"><strong id="totalCount">0</strong><span>Toplam Görev</span></div>
+        <div class="meta-item"><strong id="remainCount">0</strong><span>Kalan</span></div>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <main id="content"></main>
+
+    <!-- Footer signatures (daily only) -->
+    <footer class="sign-footer" id="signFooter">
+      <div class="sign-field">
+        <label>Sorumlu Kişi</label>
+        <input type="text" id="signResponsible" placeholder="İsim / İmza" />
+      </div>
+      <div class="sign-field">
+        <label>Departman Yöneticisi</label>
+        <input type="text" id="signManager" placeholder="İsim / İmza" />
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Firebase config + app -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
